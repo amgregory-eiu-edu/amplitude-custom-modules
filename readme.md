@@ -60,6 +60,49 @@ By using Amplitude's analysis tools (like funnels, cohorts, and session replay),
 
 ---
 
+## 🎯 Demo Walkthrough
+
+This project includes a full working demo that showcases how Amplitude's advanced analysis tools — including cohorts, experiments, feature flags, and real-time signals — can be orchestrated to detect and respond to both user struggle and fraud.
+
+### ✅ Amplitude Setup
+
+1. **Experiments**
+   - **Struggle (Friction) Experiment** – Displays a modal offering help when user struggle is detected.
+   - **Fraud Experiment** – Displays a fraud warning modal when fraud-like behavior is detected.
+
+2. **Cohorts**
+   - **Struggle Alert:** Users who trigger **3+ form errors** and have a **cart value > $500**.
+   - **Fraud Alert:** Users who **open DevTools**, **change their IP**, and **modify cookies**.
+
+3. **Feature Flags**
+   - `struggle-demo-flag` — Syncs with the **Struggle Alert** cohort.
+   - `fraud-demo-flag` — Syncs with the **Fraud Alert** cohort.
+
+---
+
+### 🧪 How the Demo Works
+
+- Use the custom Amplitude modules and `modules.html` to simulate sessions that satisfy either the **Struggle** or **Fraud** cohort conditions.
+- Use Postman to call the [Amplitude Experiment Evaluation API](https://api.lab.amplitude.com/v1/vardata) and verify which **feature flag** is returned for each test user.
+- Load the simulated user into `modules.html`, then trigger the **checkout** flow.
+- On checkout:
+  - The page evaluates the **Amplitude experiment API** to determine which modal (Struggle or Fraud) should be shown.
+  - A **Slack alert** is sent in real time for either a **Struggle Alert** or **Fraud Alert**.
+
+---
+
+### 🔬 Real-Time Mitigation in Action
+
+This demo demonstrates how to use **Amplitude’s analysis tools** — including funnels, cohorts, and session replay — to:
+
+- Detect nuanced behavior patterns in real time
+- Isolate sessions for further investigation
+- Trigger targeted mitigation strategies like personalized modals or Slack alerts
+
+It’s a blueprint for bridging the gap between **analytics insights** and **automated response**.
+
+---
+
 ## 📁 Optional Folder Structure
 
 If you prefer modular organization:
