@@ -79,3 +79,20 @@ amplitude-sdk-modules/
 ├── reset.php
 └── README.md
 ```
+
+---
+
+## 🧠 Use Cases
+
+Each module in this demo captures a specific signal that could represent user struggle, suspicious behavior, or potential fraud. While a single signal may simply indicate a usability issue, the real power comes from **combining signals** to uncover deeper insights.
+
+For example:
+- `form_monitor` may detect frequent validation errors, indicating a struggle to complete a form.
+- `devtools_observer` might signal that the user has opened browser developer tools.
+- `ip_address_monitor` could detect a change in the user's public IP address mid-session.
+- `cookie_monitor` may detect modified or cleared cookies during a sensitive process.
+
+Individually, these events might be harmless or accidental. But when **multiple signals occur within the same session**, it paints a much clearer picture:
+> A session where devtools are open, the IP address changes, and cookies are altered strongly suggests fraudulent automation, session hijacking, or a malicious script.
+
+By using Amplitude's analysis tools (like funnels, cohorts, and session replay), teams can isolate these compound behaviors, investigate trends, and build targeted mitigation strategies.
