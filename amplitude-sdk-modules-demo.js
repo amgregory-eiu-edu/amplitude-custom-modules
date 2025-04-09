@@ -1,7 +1,7 @@
 // === Amplitude Kitchen Sink Modules ===
 // Loads all custom monitoring modules after Amplitude is initialized
 
-const AMPLITUDE_PROJECT_KEY = "07cc08f79a762ee9297c8e07e0177430";
+const AMPLITUDE_PROJECT_KEY = "your_project_key"; // Replace with your Amplitude project key
 const DEBUG = true;
 
 console.log(AMPLITUDE_PROJECT_KEY);
