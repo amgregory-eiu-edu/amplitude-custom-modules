@@ -18,7 +18,7 @@ Each module below is included in `amplitude-sdk-modules-demo.js`. These can also
 | **js_error_monitor** | Captures global JS errors and unhandled promise rejections. Sends them as Amplitude events with stack traces. |
 | **impact_monitor** | Measures page load size, resource timings, and transfer weight. Helps track bloat and performance regression. |
 | **bot_detector** | Flags potential bot behavior based on user agent, interaction speed, and absence of common input events. |
-| **ip_address_monitor** | Sends the user's IP (retrieved from a public endpoint) to Amplitude for fraud/geolocation alerts. |
+| **ip_address_monitor** | Evaluates the user's IP adddress (retrieved from a public endpoint) and sends changes to Amplitude. |
 | **cookie_monitor** | Observes cookie values and changes (e.g., auth tokens, tracking IDs). Optionally flags unusual modifications. |
 | **form_monitor** | Detects suspicious form interaction. Primary use case: automatically captures validation errors to detect user struggle during form submissions. |
 
@@ -50,7 +50,7 @@ Each module in this demo captures a specific signal that could represent user st
 For example:
 - `form_monitor` may detect frequent validation errors, indicating a struggle to complete a form.
 - `devtools_observer` might signal that the user has opened browser developer tools.
-- `ip_address_monitor` could detect a change in the user's public IP address mid-session.
+- `ip_address_monitor` could detect a change in the user's public IP address mid-session, or mobile device switching from cellular to WIFI.
 - `cookie_monitor` may detect modified or cleared cookies during a sensitive process.
 
 Individually, these events might be harmless or accidental. But when **multiple signals occur within the same session**, it paints a much clearer picture:
