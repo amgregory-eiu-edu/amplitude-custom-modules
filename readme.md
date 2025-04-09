@@ -17,7 +17,7 @@ Each module below is included in `amplitude-sdk-modules-demo.js`. These can also
 | **datalayer_monitor** | Observes changes to the `dataLayer` array (e.g., GTM or analytics variables). Flags unexpected or malicious mutations. |
 | **js_error_monitor** | Captures global JS errors and unhandled promise rejections. Sends them as Amplitude events with stack traces. |
 | **impact_monitor** | Measures page load size, resource timings, and transfer weight. Helps track bloat and performance regression. |
-| **bot_detector** | Flags potential bot behavior based on user agent, interaction speed, and absence of common input events. |
+| **bot_detector** | Flags potential bot behavior from Unnatural or non-human mouse movement, interaction speed, and absence of common input events. |
 | **ip_address_monitor** | Evaluates the user's IP adddress (retrieved from a public endpoint) and sends changes to Amplitude. |
 | **cookie_monitor** | Observes cookie values and changes (e.g., auth tokens, tracking IDs). Optionally flags unusual modifications. |
 | **form_monitor** | Detects suspicious form interaction. Primary use case: automatically captures validation errors to detect user struggle during form submissions. |
