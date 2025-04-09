@@ -83,6 +83,8 @@ This project includes a full working demo that showcases how Amplitude's advance
 ### 🧪 How the Demo Works
 
 - Use the custom Amplitude modules and `modules.html` to simulate sessions that satisfy either the **Struggle** or **Fraud** cohort conditions.
+- Analyze the custom module events and signals with developer tools and the [Amplitude Event Explorer Chrome Extension](https://chromewebstore.google.com/detail/amplitude-event-explorer/acehfjhnmhbmgkedjmjlobpgdicnhkbp?hl=en-US).
+- From the Amplitude dashboard, verify that users are being segmented or identified in the appropriate cohorts based on their behavior.
 - Use Postman to call the [Amplitude Experiment Evaluation API](https://amplitude.com/docs/apis/experiment/experiment-evaluation-api) and verify which **feature flag** is returned for each test user.
 - Load the simulated user into `modules.html`, then trigger the **checkout** flow.
 - On checkout:
