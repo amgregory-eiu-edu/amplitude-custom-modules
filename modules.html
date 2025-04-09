@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Amplitude All Modules Demo</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f8f9fa;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+	<script src="amplitude-sdk-modules-demo.js"></script>
+</head>
+
+<body>
+	<h1>Amplitude All Modules Demo</h1>
+	<div
+		style="position: absolute; top: 10px; right: 10px; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
+		<h2>Environment Variables</h2>
+		<div style="margin-bottom: 10px;">
+			<label for="userIdentityInput"><strong>User Identity:</strong></label><br />
+			<input type="userID" id="userIdentityInput" placeholder="Enter UserID" style="width: 180px;" /><br>
+			<button onclick="setUserIdentity()">Set Identity</button>
+			<button onclick="setDemoIdentity()">Demo Identity</button>
+			<button onclick="resetUserIdentity()">Reset</button>
+		</div>
+		<strong>Cart Value:</strong><br />
+		<select id="cartValueDropdown" onchange="setCartValue(this.value)">
+			<option value="">Select value</option>
+			<option value="100">$100</option>
+			<option value="250">$250</option>
+			<option value="500">$500</option>
+			<option value="750">$750</option>
+			<option value="1000">$1000</option>
+		</select>
+		<br><br>
+		<strong>Open Demo:</strong><br />
+		<button onclick="openDemo()">Checkout</button>
+		<br><br>
+		<strong>Log Monitoring Footprint:</strong><br>
+
+		<button onclick="logMonitoringFootprint()">Set External Tool IDs</button>
+	</div>
+	<p>This demo initializes Amplitude and runs all 7 monitoring modules.</p>
+	<div>
+		<h2>Network (API) Monitoring</h2>
+		<button onclick="fetchStatus(200)">200 OK</button>
+		<button onclick="fetchStatus(400)">400 Bad Request</button>
+		<button onclick="fetchStatus(401)">401 Unauthorized</button>
+		<button onclick="fetchStatus(403)">403 Forbidden</button>
+		<button onclick="fetchStatus(404)">404 Not Found</button>
+		<button onclick="fetchStatus(500)">500 Internal Server Error</button>
+		<button onclick="fetchStatus(502)">502 Bad Gateway</button>
+		<button onclick="fetchStatus(503)">503 Service Unavailable</button>
+	</div>
+
+	<div>
+		<h2>JavaScript Errors</h2>
+		<button onclick="triggerReferenceError()">Reference Error</button>
+		<button onclick="triggerTypeError()">Type Error</button>
+		<button onclick="triggerSyntaxError()">Syntax Error</button>
+		<button onclick="triggerRangeError()">Range Error</button>
+		<button onclick="triggerUnhandledRejection()">Unhandled Promise Rejection</button>
+	</div>
+
+	<div>
+		<h2>DataLayer Monitoring</h2>
+		<button onclick="loadMockDataLayer()">Load Mock dataLayer</button>
+		<button onclick="pushValidToDataLayer()">Push Valid Object</button>
+		<button onclick="pushMalformedToDataLayer()">Push Malformed Object</button>
+	</div>
+
+	<div>
+		<h2>IP Address Monitoring</h2>
+		<button onclick="triggerIpChangeEvent()">Trigger IP Address Changed Event</button>
+	</div>
+
+	<div>
+		<h2>Impact Monitoring</h2>
+		<button onclick="loadExternalImage()">Load External Image</button>
+		<button onclick="sendImpactSummary()">Send Impact Summary</button>
+		<button onclick="sendResourceSummary()">Send Resource Monitor Summary</button>
+		<div id="imageContainer" style="margin-top:10px;"></div>
+	</div>
+
+	<div>
+		<h2>Cookie Monitor</h2>
+		<button onclick="setDemoSessionIDCookie()">Set demoSessionID Cookie</button>
+		<button onclick="changeDemoSessionIDCookie()">Change demoSessionID Cookie</button>
+	</div>
+
+	<div>
+		<h2>Bot Detection</h2>
+		<button onclick="simulateMouseMovement('vertical')">Up & Down</button>
+		<button onclick="simulateMouseMovement('horizontal')">Left & Right</button>
+		<button onclick="simulateMouseMovement('diagonal')">Diagonal</button>
+	</div>
+
+	<div>
+		<h2>Form Monitoring</h2>
+		<table border="1" cellpadding="8" cellspacing="0">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Scenario Type</th>
+					<th>Description</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>Basic error element</td>
+					<td>Injects a new &lt;div class="error"&gt;Required&lt;/div&gt;</td>
+					<td>
+						<label id="labelUserName">Username</label>
+						<input type="text" id="basicErrorInput" placeholder="Enter something" />
+						<button onclick="triggerBasicError()">Submit</button>
+						<button onclick="resetFormScenario(1)">Reset</button>
+						<div id="basicErrorContainer"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Hidden → Visible</td>
+					<td>Error exists but is hidden, becomes visible on trigger</td>
+					<td>
+						<input type="text" id="hiddenErrorInput" placeholder="Enter something" />
+						<div id="hiddenError" class="error" style="display: none;">This field is required</div>
+						<button onclick="showHiddenError()">Submit</button>
+						<button onclick="resetFormScenario(2)">Reset</button>
+					</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>Class change triggers error</td>
+					<td>Adds 'error' class to a field or label</td>
+					<td>
+						<label id="labelWithClass">Username</label>
+						<input type="text" id="classErrorInput" />
+						<button onclick="addErrorClass()">Submit</button>
+						<button onclick="resetFormScenario(3)">Reset</button>
+					</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>Asterisk shown</td>
+					<td>Adds a visible * to indicate required field</td>
+					<td>
+						<label for="asteriskField">Name</label>
+						<input type="text" id="asteriskField" />
+						<span id="asteriskMark" style="display: none; color: red;">*</span>
+						<button onclick="showAsterisk()">Submit</button>
+						<button onclick="resetFormScenario(4)">Reset</button>
+					</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>Error container update</td>
+					<td>Appends messages to a central error summary</td>
+					<td>
+						<label id="label5">Phone Number</label>
+						<input type="text" id="containerErrorInput" />
+						<div id="errorSummary" class="error-container"></div>
+						<button onclick="appendToErrorContainer()">Submit</button>
+						<button onclick="resetFormScenario(5)">Reset</button>
+					</td>
+				</tr>
+				<tr>
+					<td>6</td>
+					<td>"error" in element ID</td>
+					<td>Appends an element with error in its ID</td>
+					<td>
+						<label id="label6">Payment Type</label>
+						<input type="text" id="idErrorInput" />
+						<div id="emailError" style="display: none;">Invalid email format</div>
+						<button onclick="showIdBasedError()">Submit</button>
+						<button onclick="resetFormScenario(6)">Reset</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div style="margin-top: 2em;">
+		<h2>Utilities</h2>
+		<button onclick="clearAllStorage()">Clear All Storage & Reload</button>
+	</div>
+	<script>
+		function clearAllStorage() {
+			// Clear cookies
+			document.cookie.split(";").forEach(cookie => {
+				const eqPos = cookie.indexOf("=");
+				const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+				document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+			});
+
+			// Clear localStorage and sessionStorage
+			localStorage.clear();
+			sessionStorage.clear();
+
+			if (window.amplitude) {
+				window.amplitude.setUserId(null);
+				amplitude.setDeviceId(null);
+				window.amplitude.resetSessionId?.();
+				console.log("[Identity] Identity and device ID reset for anonymous session.");
+			} else {
+				console.warn("[Identity] Amplitude not initialized.");
+			}
+
+			// Reload
+			location.reload();
+		}
+	</script>
+
+	<script>
+		function fetchStatus(code) {
+			fetch(`https://app.amplitude.com.co/api/getData.php?code=${code}`)
+				.then(response => {
+					console.log('Response:', response.status, response.statusText);
+					return response.text();
+				})
+				.then(data => {
+					console.log('Response body:', data);
+				})
+				.catch(error => {
+					console.error('Fetch error:', error);
+				});
+		}
+
+		// JavaScript Error Triggers
+		function triggerReferenceError() {
+			// Attempt to access an undefined variable
+			console.log(undefinedVariable);
+		}
+
+		function triggerTypeError() {
+			// Attempt to call a non-function
+			const nonFunction = 42;
+			nonFunction();
+		}
+
+		function triggerSyntaxError() {
+			// Use eval to simulate a syntax error
+			eval('foo bar');
+		}
+
+		function triggerRangeError() {
+			// Create a range error by using an invalid array length
+			const arr = new Array(-1);
+		}
+
+		function triggerUnhandledRejection() {
+			// Create an unhandled promise rejection
+			Promise.reject(new Error("This is an unhandled promise rejection"));
+		}
+
+		function loadMockDataLayer() {
+			if (!Array.isArray(window.dataLayer)) {
+				window.dataLayer = [];
+				console.log("Initialized mock dataLayer.");
+			} else {
+				console.log("dataLayer already exists.");
+			}
+		}
+
+		function pushValidToDataLayer() {
+			window.dataLayer.push({
+				event: "user_signup",
+				userId: "test123",
+				timestamp: new Date().toISOString()
+			});
+			console.log("Pushed valid object to dataLayer.");
+		}
+
+		function pushMalformedToDataLayer() {
+			window.dataLayer.push("This is not a valid object");
+			console.log("Pushed malformed value to dataLayer.");
+		}
+
+		function triggerIpChangeEvent() {
+			const amp = window.amplitude?.logEvent ? window.amplitude : { logEvent: () => {}, identify: () => {} };
+			const previousIp = "1.2.3.4";
+			const currentIp = "5.6.7.8";
+		
+			// Log the IP address change event to Amplitude
+			amp.logEvent("ip_address_changed", {
+				previous_ip: previousIp,
+				new_ip: currentIp
+			});
+		
+			// Increment the ip_address_changed user property by 1
+			const identify = new amplitude.Identify().add("ip_address_changed", 1);
+			amp.identify(identify);
+		
+			console.log("Triggered fake IP Address Changed event and incremented ip_address_changed user property.");
+		}
+
+		function loadExternalImage() {
+			const img = new Image();
+			img.src = "https://app.amplitude.com.co/images/6514b2ba0f62d16c364dc2a6_logo%20splash%20image.jpg";
+			img.alt = "Test Image";
+			img.style.maxWidth = "200px";
+			document.getElementById("imageContainer").appendChild(img);
+			console.log("External image loaded.");
+		}
+
+		function sendImpactSummary() {
+			const amp = window.amplitude?.logEvent ? window.amplitude : { logEvent: () => { } };
+			const data = JSON.parse(sessionStorage.getItem("__amp_impact_summary") || "{}");
+			amp.logEvent("impact_summary_sent", data);
+			console.log("[Impact Monitor] Sent stored session impact summary", data);
+		}
+
+		function sendResourceSummary() {
+			const amp = window.amplitude?.logEvent ? window.amplitude : { logEvent: () => { } };
+			const data = JSON.parse(sessionStorage.getItem("__amp_resource_summary") || "{}");
+			amp.logEvent("resource_summary_sent", data);
+			console.log("[Resource Monitor] Sent stored session resource summary", data);
+		}
+
+		function setDemoSessionIDCookie() {
+			const value = generateRandomId();
+			document.cookie = `demoSessionID=${value}; path=/`;
+			console.log("Set demoSessionID cookie:", value);
+		}
+
+		function changeDemoSessionIDCookie() {
+			const value = generateRandomId();
+			document.cookie = `demoSessionID=${value}; path=/`;
+			console.log("Changed demoSessionID cookie:", value);
+		}
+
+		function generateRandomId() {
+			return Math.random().toString(36).substring(2, 15) +
+				Math.random().toString(36).substring(2, 15);
+		}
+
+		function simulateMouseMovement(type) {
+			const cursor = document.createElement("div");
+			cursor.id = "fake-cursor";
+			cursor.style.position = "fixed";
+			cursor.style.width = "20px";
+			cursor.style.height = "20px";
+			cursor.style.background = "red";
+			cursor.style.borderRadius = "50%";
+			cursor.style.zIndex = 10000;
+			document.body.appendChild(cursor);
+
+			const movements = {
+				vertical: [[300, 200], [300, 300], [300, 200], [300, 300], [300, 200], [300, 300]],
+				horizontal: [[200, 300], [300, 300], [200, 300], [300, 300], [200, 300], [300, 300]],
+				diagonal: [[200, 200], [300, 300], [200, 200], [300, 300], [200, 200], [300, 300]]
+			};
+
+			const path = movements[type] || [];
+			let i = 0;
+
+			setTimeout(() => {
+				const interval = setInterval(() => {
+					if (i >= path.length) {
+						clearInterval(interval);
+						document.body.removeChild(cursor);
+
+						const angleSummary = {
+							vertical: ["1.57", "-1.57"],
+							horizontal: ["0.00", "3.14"],
+							diagonal: ["0.79", "2.36", "-0.79", "-2.36"]
+						};
+
+						const syntheticDetail = {
+							sample_size: path.length,
+							unique_angles: angleSummary[type]?.length || 1,
+							angles: angleSummary[type] || ["0.00"],
+							synthetic: true,
+							simulated_direction: type
+						};
+
+						const amp = window.amplitude?.logEvent ? window.amplitude : { logEvent: () => { } };
+						amp.logEvent("linear_mouse_movement_detected", syntheticDetail);
+						console.log("[Bot Detector] Simulated linear movement triggered", syntheticDetail);
+
+						return;
+					}
+					cursor.style.left = path[i][0] + "px";
+					cursor.style.top = path[i][1] + "px";
+
+					// Dispatch synthetic mousemove event
+					const event = new MouseEvent("mousemove", {
+						clientX: path[i][0],
+						clientY: path[i][1],
+						bubbles: true,
+						cancelable: true
+					});
+					document.dispatchEvent(event);
+					i++;
+				}, 250);
+			}, 1000);
+		}
+
+		function triggerBasicError() {
+			const container = document.getElementById("basicErrorContainer");
+			const error = document.createElement("div");
+			error.className = "error";
+			error.innerText = "Required";
+			container.appendChild(error);
+		}
+
+		function showHiddenError() {
+			document.getElementById("hiddenError").style.display = "block";
+		}
+
+		function addErrorClass() {
+			document.getElementById("labelWithClass").classList.add("error");
+		}
+
+		function showAsterisk() {
+			document.getElementById("asteriskMark").style.display = "inline";
+		}
+
+		function appendToErrorContainer() {
+			const summary = document.getElementById("errorSummary");
+			const msg = document.createElement("div");
+			msg.innerText = "Please correct the highlighted fields.";
+			summary.appendChild(msg);
+		}
+
+		function showIdBasedError() {
+			document.getElementById("emailError").style.display = "block";
+		}
+
+		function resetFormScenario(id) {
+			switch (id) {
+				case 1:
+					document.getElementById("basicErrorInput").value = "";
+					document.getElementById("basicErrorContainer").innerHTML = "";
+					break;
+				case 2:
+					document.getElementById("hiddenErrorInput").value = "";
+					document.getElementById("hiddenError").style.display = "none";
+					break;
+				case 3:
+					document.getElementById("classErrorInput").value = "";
+					document.getElementById("labelWithClass").classList.remove("error");
+					break;
+				case 4:
+					document.getElementById("asteriskField").value = "";
+					document.getElementById("asteriskMark").style.display = "none";
+					break;
+				case 5:
+					document.getElementById("containerErrorInput").value = "";
+					document.getElementById("errorSummary").innerHTML = "";
+					break;
+				case 6:
+					document.getElementById("idErrorInput").value = "";
+					document.getElementById("emailError").style.display = "none";
+					break;
+			}
+		}
+
+		function setCartValue(value) {
+			const amp = window.amplitude?.logEvent ? window.amplitude : { logEvent: () => {} };
+			
+			// Log the cart value update event to Amplitude
+			amp.logEvent("cart_value_updated", {
+				cart_value: parseInt(value)
+			});
+		
+			// Update the cart_value user property in Amplitude
+			const identify = new amplitude.Identify().set("cart_value", parseInt(value));
+			amplitude.identify(identify);
+		
+			// Create or update the cart_value cookie
+			setCookie("cart_value", value, 7); // Set the cookie with a 7-day expiration
+		
+			console.log("[Environment] Cart value updated:", value);
+		}
+		
+		// Helper function to set a cookie
+		function setCookie(name, value, days) {
+			const date = new Date();
+			date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000); // Convert days to milliseconds
+			const expires = "expires=" + date.toUTCString();
+			document.cookie = `${name}=${value}; ${expires}; path=/`;
+		}
+
+		function getCookie(name) {
+			const nameEQ = name + "=";
+			const cookies = document.cookie.split("; ");
+			for (let i = 0; i < cookies.length; i++) {
+				const cookie = cookies[i];
+				if (cookie.indexOf(nameEQ) === 0) {
+					return cookie.substring(nameEQ.length);
+				}
+			}
+			return null;
+		}
+
+		function setUserIdentity() {
+			const userInput = document.getElementById("userIdentityInput").value.trim();
+
+			if (!userInput) {
+				console.warn("[Identity] User input not provided.");
+				return;
+			}
+
+			if (window.amplitude) {
+				let userId, deviceId;
+
+				// Check if the input starts with "demo-user-"
+				if (userInput.startsWith("demo-user-")) {
+					userId = userInput;
+					deviceId = userInput.replace("demo-user-", "demo-device-");
+				}
+				// Check if the input is all numeric
+				else if (/^\d+$/.test(userInput)) {
+					userId = `demo-user-${userInput}`;
+					deviceId = `demo-device-${userInput}`;
+				} else {
+					console.warn("[Identity] Invalid input format. Must start with 'demo-user-' or be all numeric.");
+					return;
+				}
+
+				// Set the user ID and device ID in Amplitude
+				window.amplitude.setUserId(userId);
+				window.amplitude.setDeviceId(deviceId);
+
+				// Update user properties in Amplitude
+				const identify = new amplitude.Identify()
+					.set("user_id", userId)
+					.set("device_id", deviceId);
+				window.amplitude.identify(identify);
+
+				// Set the userID cookie
+				setCookie("userID", userId, 7); // Cookie expires in 7 days
+
+				// Get the current Amplitude session ID and set it as a cookie
+				const ampSessionID = window.amplitude.getSessionId();
+				setCookie("ampSessionID", ampSessionID, 7); // Cookie expires in 7 days
+
+				console.log("[Identity] Set user identity:", { userId, deviceId, ampSessionID });
+			} else {
+				console.warn("[Identity] Amplitude not initialized.");
+			}
+		}
+
+		function resetUserIdentity() {
+			if (window.amplitude) {
+				// Send a session_end event to Amplitude
+				window.amplitude.logEvent("session_end");
+				console.log("[Identity] Sent session_end event to Amplitude.");
+
+				// Reset the user identity and session
+				window.amplitude.reset();
+				console.log("[Identity] Amplitude reset called. Identity and session cleared.");
+			} else {
+				console.warn("[Identity] Amplitude not initialized.");
+			}
+
+			 // Add a small delay before redirecting to reset.php
+			 setTimeout(() => {
+				window.location.href = "reset.php";
+			  }, 1000); // 500ms delay
+		}
+
+		function logMonitoringFootprint() {
+			const dynatraceId = generateRandomId();
+			const datadogId = generateRandomId();
+
+			amplitude.logEvent('Monitoring Footprint Detected', {
+				dynatrace_id: dynatraceId,
+				datadog_id: datadogId
+			});
+
+			const identify = new amplitude.Identify()
+				.set('dynatrace_id', dynatraceId)
+				.set('datadog_id', datadogId);
+			amplitude.identify(identify);
+
+			console.log("[Monitoring] Logged external tool IDs:", { dynatrace_id: dynatraceId, datadog_id: datadogId });
+		}
+		function setDemoIdentity() {
+			const timestamp = Date.now(); // Get the current timestamp
+			const sessionId = window.amplitude.getSessionId(); // Use the timestamp as the session ID
+			const userId = `demo-user-${sessionId}`; // Create the user ID
+			const deviceId = `demo-device-${sessionId}`; // Create the device ID
+
+			if (window.amplitude) {
+				// Set the session ID, user ID, and device ID
+				window.amplitude.setUserId(userId);
+				window.amplitude.setDeviceId(deviceId);
+
+				// Identify the user with the new identity
+				const identify = new amplitude.Identify()
+					.set("session_id", sessionId)
+					.set("user_id", userId)
+					.set("device_id", deviceId);
+				window.amplitude.identify(identify);
+
+				// Set the userID cookie
+				setCookie("userID", userId, 7); // Cookie expires in 7 days
+
+				// Get the current Amplitude session ID and set it as a cookie
+				const ampSessionID = window.amplitude.getSessionId();
+				setCookie("ampSessionID", ampSessionID, 7); // Cookie expires in 7 days
+
+				console.log("[Identity] Set demo identity:", { sessionId, userId, deviceId, ampSessionID });
+			} else {
+				console.warn("[Identity] Amplitude not initialized.");
+			}
+		}
+
+		function openDemo() {
+			// Get the current directory path
+			const currentPath = window.location.pathname;
+			const directoryPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
+
+			// Get the userID from the cookie
+			const userId = getCookie("userID");
+			if (!userId) {
+				console.warn("[Demo] No userID cookie found. Cannot pass userID as a query parameter.");
+				return;
+			}
+
+			// Construct the URL for the demo with the userID as a query parameter
+			const demoUrl = `${window.location.origin}${directoryPath}/?userID=${encodeURIComponent(userId)}`;
+
+			// Open the demo in a new window
+			window.open(demoUrl, "demo");
+			console.log("[Demo] Opened demo in new window with userID:", demoUrl);
+		}
+	</script>
+</body>
+
+</html>
