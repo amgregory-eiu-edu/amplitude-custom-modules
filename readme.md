@@ -83,7 +83,7 @@ This project includes a full working demo that showcases how Amplitude's advance
 ### 🧪 How the Demo Works
 
 - Use the custom Amplitude modules and `modules.html` to simulate sessions that satisfy either the **Struggle** or **Fraud** cohort conditions.
-- Use Postman to call the [Amplitude Experiment Evaluation API](https://api.lab.amplitude.com/v1/vardata) and verify which **feature flag** is returned for each test user.
+- Use Postman to call the [Amplitude Experiment Evaluation API](https://amplitude.com/docs/apis/experiment/experiment-evaluation-api) and verify which **feature flag** is returned for each test user.
 - Load the simulated user into `modules.html`, then trigger the **checkout** flow.
 - On checkout:
   - The page evaluates the **Amplitude experiment API** to determine which modal (Struggle or Fraud) should be shown.
@@ -93,7 +93,7 @@ This project includes a full working demo that showcases how Amplitude's advance
 
 ### 🔬 Real-Time Mitigation in Action
 
-This demo demonstrates how to use **Amplitude’s analysis tools** — including funnels, cohorts, and session replay — to:
+This demo illustrates how to use **Amplitude’s analysis tools** — including funnels, cohorts, and session replay — to:
 
 - Detect nuanced behavior patterns in real time
 - Isolate sessions for further investigation
